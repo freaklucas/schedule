@@ -93,6 +93,7 @@ class _ViewNoteState extends State<ViewNote> {
                         SizedBox(
                           width: 8.0,
                         ),
+
                       ],
                     ),
                   ],
