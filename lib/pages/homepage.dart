@@ -1,11 +1,12 @@
 import 'dart:math';
 
+import 'package:agenda/pages/viewnote.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:agenda/pages/addnote.dart';
-import 'package:agenda/pages/viewnote.dart';
+import 'package:flutter/widgets.dart';
+
+import 'addnote.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -30,43 +31,41 @@ class _HomePageState extends State<HomePage> {
     Colors.pink[200],
   ];
 
+  String get formattedTime => null;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context)
-              .push(
-            MaterialPageRoute(
-              builder: (context) => AddNote(),
-            ),
-          )
-              .then((value) {
-            print("Calling Set  State !");
-            setState(() {});
-          });
-        },
-        child: Icon(
-          Icons.add,
-          color: Colors.white70,
-        ),
-        backgroundColor: Colors.grey[700],
-      ),
-      //
-      appBar: AppBar(
-        title: Text(
-          "Notes",
-          style: TextStyle(
-            fontSize: 32.0,
-            fontFamily: "lato",
-            fontWeight: FontWeight.bold,
+          onPressed: () {
+            Navigator.of(context)
+                .push(
+              MaterialPageRoute(
+                builder: (context) => AddNote(),
+              ),
+            )
+                .then((value) {
+              print("chamando estado setstate");
+              setState(() {});
+            });
+          },
+          child: Icon(
+            Icons.add,
             color: Colors.white70,
           ),
+          backgroundColor: Colors.grey[700]),
+      appBar: AppBar(
+        title: Text(
+          "Notas",
+          style: TextStyle(
+              fontSize: 32.0,
+              fontFamily: "lato",
+              fontWeight: FontWeight.bold,
+              color: Colors.white60),
         ),
         elevation: 0.0,
         backgroundColor: Color(0xff070706),
       ),
-      //
       body: FutureBuilder<QuerySnapshot>(
         future: ref.get(),
         builder: (context, snapshot) {
@@ -74,23 +73,17 @@ class _HomePageState extends State<HomePage> {
             if (snapshot.data.docs.length == 0) {
               return Center(
                 child: Text(
-                  "You have no saved Notes !",
-                  style: TextStyle(
-                    color: Colors.white70,
-                  ),
+                  "Não foi salvo",
+                  style: TextStyle(color: Colors.white70),
                 ),
               );
             }
-
             return ListView.builder(
               itemCount: snapshot.data.docs.length,
               itemBuilder: (context, index) {
                 Random random = new Random();
                 Color bg = myColors[random.nextInt(4)];
                 Map data = snapshot.data.docs[index].data();
-                DateTime mydateTime = data['created'].toDate();
-                String formattedTime =
-                    DateFormat.yMMMd().add_jm().format(mydateTime);
 
                 return InkWell(
                   onTap: () {
@@ -104,9 +97,11 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                     )
-                        .then((value) {
-                      setState(() {});
-                    });
+                        .then(
+                      (value) {
+                        setState(() {});
+                      },
+                    );
                   },
                   child: Card(
                     color: bg,
@@ -118,23 +113,10 @@ class _HomePageState extends State<HomePage> {
                           Text(
                             "${data['title']}",
                             style: TextStyle(
-                              fontSize: 24.0,
-                              fontFamily: "lato",
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black87,
-                            ),
-                          ),
-                          //
-                          Container(
-                            alignment: Alignment.centerRight,
-                            child: Text(
-                              formattedTime,
-                              style: TextStyle(
-                                fontSize: 20.0,
+                                fontSize: 34.0,
                                 fontFamily: "lato",
-                                color: Colors.black87,
-                              ),
-                            ),
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black),
                           ),
                         ],
                       ),
@@ -145,7 +127,7 @@ class _HomePageState extends State<HomePage> {
             );
           } else {
             return Center(
-              child: Text("Loading..."),
+              child: Text("Carregando..."),
             );
           }
         },
