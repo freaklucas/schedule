@@ -25,7 +25,6 @@ class _ViewNoteState extends State<ViewNote> {
     des = widget.data['description'];
     return SafeArea(
       child: Scaffold(
-        //
         floatingActionButton: edit
             ? FloatingActionButton(
                 onPressed: save,
@@ -36,9 +35,7 @@ class _ViewNoteState extends State<ViewNote> {
                 backgroundColor: Colors.grey[700],
               )
             : null,
-        //
         resizeToAvoidBottomInset: false,
-        //
         body: SingleChildScrollView(
           child: Container(
             padding: EdgeInsets.all(
@@ -69,7 +66,6 @@ class _ViewNoteState extends State<ViewNote> {
                         ),
                       ),
                     ),
-                    //
                     Row(
                       children: [
                         ElevatedButton(
@@ -94,33 +90,13 @@ class _ViewNoteState extends State<ViewNote> {
                             ),
                           ),
                         ),
-                        //
                         SizedBox(
                           width: 8.0,
-                        ),
-                        //
-                        ElevatedButton(
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(
-                              Colors.red[300],
-                            ),
-                            padding: MaterialStateProperty.all(
-                              EdgeInsets.symmetric(
-                                horizontal: 15.0,
-                                vertical: 8.0,
-                              ),
-                            ),
-                          ),
                         ),
                       ],
                     ),
                   ],
                 ),
-                //
-                SizedBox(
-                  height: 12.0,
-                ),
-                //
                 Form(
                   key: key,
                   child: Column(
@@ -203,7 +179,6 @@ class _ViewNoteState extends State<ViewNote> {
 
   void save() async {
     if (key.currentState.validate()) {
-      // TODo : showing any kind of alert that new changes have been saved
       await widget.ref.update(
         {'title': title, 'description': des},
       );

@@ -31,18 +31,23 @@ class _HomePageState extends State<HomePage> {
     Colors.pink[200],
   ];
 
+  String get formattedTime => null;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => AddNote(),
-              ),
-            ).then((value) {
-              print("chamando o estado setado");
-            });
+        onPressed: () {
+          Navigator.of(context)
+              .push(
+            MaterialPageRoute(
+              builder: (context) => AddNote(),
+            ),
+          )
+              .then((value) {
+            print("chamando estado setstate");
+            setState(() {});
+          });
           },
           child: Icon(
             Icons.add,
@@ -66,7 +71,16 @@ class _HomePageState extends State<HomePage> {
           future: ref.get(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-
+              if(snapshot.data.docs.length ==0) {
+                return Center (
+                  child: Text (
+                    "Não foi salvo",
+                    style: TextStyle (
+                      color: Colors.white70
+                    ),
+                  ),
+                  );
+              }
               return ListView.builder(
                 itemCount: snapshot.data.docs.length,
                 itemBuilder: (context, index) {
@@ -76,6 +90,21 @@ class _HomePageState extends State<HomePage> {
                   Map data = snapshot.data.docs[index].data();
                   
                   return InkWell(
+                    onTap: () {
+                      Navigator.of(context)
+                          .push(
+                        MaterialPageRoute(
+                          builder: (context) => ViewNote(
+                            data,
+                            formattedTime,
+                            snapshot.data.docs[index].reference,
+                          ),
+                        ),
+                      )
+                      .then((value) {
+                        setState(() {});
+                      });
+                  },
                     child: Card(
                       color: bg,
                       child: Padding(

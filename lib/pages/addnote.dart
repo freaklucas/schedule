@@ -125,7 +125,6 @@ class _AddnoteState extends State<AddNote> {
   var data = {
     'title': title,
     'description': des,
-    'created': DateTime.now(),
   };
 
   ref.add(data);
