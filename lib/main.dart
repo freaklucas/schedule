@@ -1,4 +1,6 @@
+import 'package:agenda/pages/homepage.dart';
 import 'package:agenda/pages/login.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -20,7 +22,8 @@ class MyApp extends StatelessWidget {
         accentColor: Colors.purple,
         scaffoldBackgroundColor: Color(0xff070706),
       ),
-      home: LoginPage(),
+      home:
+      FirebaseAuth.instance.currentUser == null ? LoginPage() : HomePage(),
     );
   }
 }
